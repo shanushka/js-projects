@@ -1,0 +1,76 @@
+
+
+.container {
+  width: 720px;
+  height: 400px;
+  margin: 0 auto;
+  overflow: hidden;
+  z-index: 0;
+  position:relative;
+}
+
+.image-wrapper{
+  width:6000px;
+  z-index:10px;
+  position:absolute;
+    }
+
+img{
+  float: left;
+  width:720px;
+  height:400px;
+  display:block;
+
+}
+
+.btn-left,.btn-right{
+  position:absolute;
+  z-index:20;
+  width:40px;
+  height:40px;
+  background-size: cover;
+  top:200px;
+}
+
+.btn-right{
+  background-image: url('../images/arrow-right.png');
+  right:20px;
+}
+
+.btn-left{
+  background-image: url('../images/arrow-left.png');
+  left:20px;
+
+}
+
+.bottom{
+  width:400px;
+  position: absolute;
+  z-index:20;
+  left:300px;
+  bottom:20px;
+}
+
+.bubble {
+  margin:0 3px;
+  background-color:grey;
+  border-radius: 1000000px;
+  width: 12px;
+  height: 12px;
+  float:left;
+  transition: opacity 0.1s linear;
+}
+
+.active{
+  background-color:white;
+
+}
+
+
+
+/* 
+/* 
+.active{
+
+  background:lightgreen;
+} */ 
