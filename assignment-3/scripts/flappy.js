@@ -105,6 +105,8 @@ function Flappy(cont){
         {
          isResumed=false;
          element.innerHTML="";
+         num.innerHTML='0'
+         element.appendChild(scoreCard);
          this.game();
         }
      
