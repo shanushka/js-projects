@@ -14,94 +14,93 @@ function Carousel(elementClass,container){
   container.appendChild(buttonLeft);
   container.appendChild(buttonRight);
   container.appendChild(bottomButton);
-
-  var allImages =  slider.children;
-
-  for(i=0;i<allImages.length;i++)
-  { 
-     spanB=document.createElement('span');
-     spanB.classList.add('bubble');
-     bottomButton.appendChild(spanB);
-     bubbles.push(spanB)
-  }
-
-  slider.style.marginLeft=0+'px';    
-  var current = 0;
-  var flag=1;
-  var speed=50;
-  var hold;
-  var prev,next=0;
   prev=document.getElementById('btn-left');
   next=document.getElementById('btn-right');
-  var margin,secondLast;
+  var allImages =  slider.children;
+  
+  for(var i=0 ; i < allImages.length; i++)
+  { 
+      spanB=document.createElement('span');
+      spanB.classList.add('bubble');
+      bottomButton.appendChild(spanB);
+      bubbles.push(spanB)
+   
+  }
+  
+  var x = 0;
+  var dx = 1;
+  var speed=10;
+  var sliderInterval;
+  var sliderHold;
+  var width=720;
+  var currentImage=0;
 
   this.init =function(){
-    animate(5);   
+    sliders();
     buttonEvent();
   }
-  currentImage=0;
 
-  function animate(speed) {
-  secondLast= (allImages.length-1 )* 720;   
-    interval=setInterval(function(){
-      clearTimeout(hold)
-      margin=parseInt(slider.style.marginLeft);
-      slider.style.marginLeft=(margin-1*flag+'px');
-      if (margin<=-secondLast){
-        flag =-1;
-      }
-      else if(margin>0)
-      {
-        flag=1;
-      }
+   sliders=function() {
+    sliderHold = setTimeout(function() {
+     sliderInterval = setInterval(animate, speed);
+    }, 2000);
+   }
 
-      //Hold the Image 
-      if((margin)%720==0){
-        console.log(margin); 
-        clearInterval(interval);
-        currentImage++;
+  function animate() {
+    var secondLast = allImages.length - 1
+    slider.style.left = '-' + x + 'px';
+    if (x >= width * secondLast) {
+     dx = -1;
+    } else if (x <= 0) {
+     dx = 1;
+    }
+    if (x % width === 0) {
+     currentImage = x/width;
+     clearInterval(sliderInterval);
+     sliderHold = setTimeout(function() {
+      sliderInterval = setInterval(animate, speed);
+     }, 2000);
+    }
+    x = x + (speed * dx);
+   checkActive();
+  
+   }
 
-        console.log('currentImage',currentImage);
-        hold= setTimeout( 
-          function()
-          { animate(speed);
-        },2000)
-      } 
-    },speed);
-    
-    currentImage%=allImages.length
+   //check active state
 
-    //check active state
+   function checkActive(){
     bubbles.forEach(function(bubble,index){
       if(index === currentImage){
-        bubble.classList.add('active')
+        bubble.classList.add('active');
       } else {
-        bubble.classList.remove('active')
+        bubble.classList.remove('active');
       }
-    })
 
-  }
+      
+    })
+   }
+
   function buttonEvent(){
     prev.addEventListener('click',function(e){
-        position=slider.style.marginLeft;
-        // prev.disabled=true;
-        if(margin<=-720){
-            clearInterval(interval);
-            // prev.disabled=false;
-          flag=-1; 
-          animate(5);
+      if( x >= width){
+        console.log(x)
+        buttonClicked();
+          dx=-1; 
         }
-            
     })
 
     next.addEventListener('click',function(e){
-        if(margin>=-(allImages.length-2)*720){
-        
-          clearInterval(interval)
-          flag=1;
-          animate(5);
+        if( x <= (allImages.length-2)*width){
+          dx=1;
+          buttonClicked();
         }
     })
-    } 
+  } 
+
+  function buttonClicked(){
+    clearInterval(sliderInterval);
+    clearTimeout(sliderHold);
+    sliderInterval = setInterval(animate, speed);
+  }
 }
 
